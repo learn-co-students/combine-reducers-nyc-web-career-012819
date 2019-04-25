@@ -4,20 +4,19 @@ import uuid from 'uuid';
 import { connect } from 'react-redux';
 
 export class BookInput extends Component {
-
   state = {
     title: '',
     authorName: ''
   }
 
-  handleOnChange = event => {
+  handleOnChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
 
-  handleOnSubmit = event => {
+  handleOnSubmit = (event) => {
     event.preventDefault();
     const book = {...this.state, id: uuid() };
     this.props.addBook(book);
@@ -29,11 +28,11 @@ export class BookInput extends Component {
 
   render() {
     return(
-      <form onSubmit={(event) => this.handleOnSubmit(event)}>
+      <form onSubmit={this.handleOnSubmit}>
         <p>
           <input
             type="text"
-            onChange={(event) => this.handleOnChange(event)}
+            onChange={this.handleOnChange}
             name="title"
             value={this.state.title}
             placeholder="book title" />
@@ -41,7 +40,7 @@ export class BookInput extends Component {
         <p>
           <input
             type="text"
-            onChange={(event) => this.handleOnChange(event)}
+            onChange={this.handleOnChange}
             name="authorName"
             value={this.state.authorName}
             placeholder="author name" />
@@ -52,4 +51,10 @@ export class BookInput extends Component {
   }
 };
 
-export default connect(null, { addBook })(BookInput);
+const mapStateToProps = (state) => {
+  return {
+    books: state.books,
+  };
+}
+
+export default connect(mapStateToProps, { addBook })(BookInput);
